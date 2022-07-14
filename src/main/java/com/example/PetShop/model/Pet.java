@@ -1,8 +1,8 @@
 package com.example.PetShop.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,9 +20,9 @@ public class Pet {
     @NonNull
     private String breed;
     @NonNull
-    private LocalDate date_created;
+    private String date_created;
     @NonNull
-    private LocalDate date_modified;
+    private String date_modified;
 
     @JsonIgnore
     @ManyToOne
@@ -34,12 +34,23 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(int id, String name, String breed, LocalDate date_created, LocalDate date_modified) {
+    public Pet(int id, String name, String breed, String date_created, String date_modified, int owner_id) {
         this.id = id;
         this.name = name;
         this.breed = breed;
         this.date_created = date_created;
         this.date_modified = date_modified;
+        this.owner_id = owner_id;
+    }
+
+    public Pet(int id, String name, String breed, String date_created, String date_modified, Owner owner, int owner_id) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.date_created = date_created;
+        this.date_modified = date_modified;
+        this.owner = owner;
+        this.owner_id = owner_id;
     }
 
 
@@ -84,19 +95,19 @@ public class Pet {
         this.breed = breed;
     }
 
-    public LocalDate getDate_created() {
+    public String getDate_created() {
         return date_created;
     }
 
-    public void setDate_created(LocalDate date_created) {
+    public void setDate_created(String date_created) {
         this.date_created = date_created;
     }
 
-    public LocalDate getDate_modified() {
+    public String getDate_modified() {
         return date_modified;
     }
 
-    public void setDate_modified(LocalDate date_modified) {
+    public void setDate_modified(String date_modified) {
         this.date_modified = date_modified;
     }
 

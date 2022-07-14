@@ -1,4 +1,4 @@
-package com.example.PetShop.errorHandler;
+package com.example.PetShop.model;
 
 public class ErrorMessage {
 
