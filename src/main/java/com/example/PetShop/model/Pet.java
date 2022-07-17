@@ -1,6 +1,9 @@
 package com.example.PetShop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -24,44 +27,23 @@ public class Pet {
     @NonNull
     private String date_modified;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name="owner_id", referencedColumnName = "id")
     private Owner owner;
-
-    private int owner_id;
 
     public Pet() {
     }
 
-    public Pet(int id, String name, String breed, String date_created, String date_modified, int owner_id) {
-        this.id = id;
-        this.name = name;
-        this.breed = breed;
-        this.date_created = date_created;
-        this.date_modified = date_modified;
-        this.owner_id = owner_id;
-    }
-
-    public Pet(int id, String name, String breed, String date_created, String date_modified, Owner owner, int owner_id) {
+    public Pet(int id, String name, String breed, String date_created, String date_modified, Owner owner) {
         this.id = id;
         this.name = name;
         this.breed = breed;
         this.date_created = date_created;
         this.date_modified = date_modified;
         this.owner = owner;
-        this.owner_id = owner_id;
     }
 
-
-
-    public int getOwner_id() {
-        return owner_id;
-    }
-
-    public void setOwner_id(int owner_id) {
-        this.owner_id = owner_id;
-    }
 
     public Owner getOwner() {
         return owner;

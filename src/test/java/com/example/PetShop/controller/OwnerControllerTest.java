@@ -78,10 +78,10 @@ public class OwnerControllerTest {
     private Owner owner1;
     private Owner owner2;
 
-    private Pet pet1 = new Pet(1, "DouDou", "Labrador", date, date, 1);
-    private Pet pet2 = new Pet(2, "DouDou2", "Labrador", date, date, 1);
-    private Pet pet3 = new Pet(3, "DouDou3", "Labrador", date, date, 2);
-    private Pet pet4 = new Pet(4, "DouDou4", "Labrador", date, date, 2);
+    private Pet pet1 = new Pet(1, "DouDou", "Labrador", date, date,owner1);
+    private Pet pet2 = new Pet(2, "DouDou2", "Labrador", date, date, owner1);
+    private Pet pet3 = new Pet(3, "DouDou3", "Labrador", date, date, owner2);
+    private Pet pet4 = new Pet(4, "DouDou4", "Labrador", date, date, owner2);
 
     @Before
     public void initialize() throws ValidationException {
@@ -103,7 +103,7 @@ public class OwnerControllerTest {
 
         List<Owner> ownerList = new ArrayList<>(Arrays.asList(owner1, owner2));
 
-        when(ownerService.findAll()).thenReturn(ownerList);
+        when(ownerService.getAllOwners()).thenReturn(ownerList);
 
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/owner")
@@ -119,9 +119,9 @@ public class OwnerControllerTest {
     @Test
     public void retrieveOwnerById() throws Exception {
 
-        Mockito.when(ownerService.findById(1)).thenReturn(Optional.of(owner1));
+        Mockito.when(ownerService.findById(1)).thenReturn(owner1);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/owner/1")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/owner/findById/1")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -135,14 +135,15 @@ public class OwnerControllerTest {
 
     @Test
     public void createTestWithPost() throws Exception {
+        Owner newOwner = new Owner(3, "Sunny", "Chew", date, date,null);
 
-        Pet pet1 = new Pet(5, "DouDou", "Labrador", date, date, 3);
-        Pet pet2 = new Pet(6, "DouDou2", "Labrador", date, date, 3);
+        Pet pet1 = new Pet(5, "DouDou", "Labrador", date, date, newOwner);
+        Pet pet2 = new Pet(6, "DouDou2", "Labrador", date, date, newOwner);
         List<Pet> petList = new ArrayList<>();
         petList.add(pet1);
         petList.add(pet2);
 
-        Owner newOwner = new Owner(3, "Sunny", "Chew", date, date, petList);
+        newOwner.setPetList(petList);
 
         Mockito.when(ownerController.create(newOwner)).thenReturn(newOwner);
 
@@ -164,10 +165,10 @@ public class OwnerControllerTest {
     public void findByDateTest() throws Exception {
 
         List<Owner> ownerList = new ArrayList<>(Arrays.asList(owner1, owner2));
-        when(ownerService.findByDateCreated("2022-07-03")).thenReturn(ownerList);
+        when(ownerService.findByDateCreated("2022-07-15")).thenReturn(ownerList);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/owner/searchByDate?dateCreated=2022-07-03")
+                MockMvcRequestBuilders.get("/owner/findByDateCreated?dateCreated=2022-07-15")
                         .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder)

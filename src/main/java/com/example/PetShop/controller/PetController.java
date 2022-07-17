@@ -1,8 +1,6 @@
 package com.example.PetShop.controller;
 
 
-
-
 import com.example.PetShop.model.ErrorMessage;
 import com.example.PetShop.model.Pet;
 import com.example.PetShop.model.Owner;
@@ -18,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class PetController {
 
@@ -29,80 +28,36 @@ public class PetController {
 
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @PostMapping("/pet")
+    @PostMapping("/pet/add")
     public Pet create(@RequestBody Pet pet) throws ValidationException {
 
-        if (pet.getName() == null || pet.getBreed() == null)
-            throw new ValidationException("Pet record cannot be empty.");
-        else if(ownerService.findById(pet.getOwner_id()).isPresent()){
-            throw new ValidationException("Owner record cannot be found.");
-        }
-
-        pet.setDate_created(dtf.format(LocalDate.now()));
-        pet.setDate_modified(dtf.format(LocalDate.now()));
-        pet.setName(StringUtils.capitalize(pet.getName()));
-        pet.setBreed(StringUtils.capitalize(pet.getBreed()));
-
-        petService.save(pet);
-        return pet;
+        return petService.create(pet);
     }
 
     @GetMapping("/pet")
     Iterable<Pet> read() {
-        return petService.findAll();
+        return petService.getAllPets();
     }
 
-    @PutMapping("/pet")
+    @PutMapping("/pet/update")
     public Pet update(@RequestBody Pet pet) throws ValidationException {
-
-        if (pet != null && petService.findById(pet.getId()).isPresent()) {
-            Pet updatePet = petService.findById(pet.getId()).get();
-            updatePet.setName(StringUtils.capitalize(pet.getName()));
-            updatePet.setBreed(StringUtils.capitalize(pet.getBreed()));
-            pet.setDate_modified(dtf.format(LocalDate.now()));
-
-            return petService.save(updatePet);
-        } else
-            throw new ValidationException("Pet record not found with ID(" + pet.getId() + ").");
+        return petService.update(pet);
     }
 
-    @DeleteMapping("/pet/{id}")
-    public String deleteById(@PathVariable Integer id) throws ValidationException {
-        Pet tempPet;
-        if (petService.findById(id).isPresent()) {
-            tempPet = petService.findById(id).get();
-            petService.deleteById(id);
-        } else
-            throw new ValidationException("Pet record not found with ID(" + id + ").");
-
-        return "Delete Successfully: " + tempPet;
+    @DeleteMapping("/pet/delete/{id}")
+    public void deleteById(@PathVariable int id) throws ValidationException {
+        petService.deleteById(id);
     }
 
-    @GetMapping("/pet/{id}")
-    public Optional<Pet> findById(@PathVariable Integer id) {
+    @GetMapping("/pet/findById/{id}")
+    public Pet findById(@PathVariable int id) throws ValidationException {
         return petService.findById(id);
     }
 
-    @GetMapping("/pet/search")
-    public List<Pet> findOwnerByName(@RequestParam("name") String name) throws ValidationException {
 
-        if(petService.findByName(name).size() > 0)
-            return petService.findByName(name);
-        else
-            throw new ValidationException("Pet name does not exist.");
-    }
 
-    @GetMapping("/pet/{id}/owner")
-    public Owner findOwnerById(@PathVariable Integer id) throws ValidationException {
 
-        if (petService.findById(id).isPresent())
-            return petService.findById(id).get().getOwner();
-        else
-            throw new ValidationException("Pet record not found with ID(" + id + ").");
-
-    }
-
-    @GetMapping("/pet/top")
+    @GetMapping("/pet/topName")
     public List<Object> findTopName() throws ValidationException {
 
         return petService.countPetByName();

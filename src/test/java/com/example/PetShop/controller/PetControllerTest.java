@@ -1,7 +1,5 @@
 package com.example.PetShop.controller;
 
-import com.example.PetShop.controller.OwnerController;
-import com.example.PetShop.controller.PetController;
 import com.example.PetShop.model.Owner;
 import com.example.PetShop.model.Pet;
 import com.example.PetShop.service.OwnerService;
@@ -15,42 +13,28 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.xml.bind.ValidationException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PetController.class)
@@ -68,23 +52,20 @@ public class PetControllerTest {
     @MockBean
     OwnerService ownerService;
 
-    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    String date = "2022-07-03";
+    String date = "2022-07-16";
 
     ObjectMapper objectMapper = new ObjectMapper();
     ObjectWriter objectWriter = objectMapper.writer();
-
     private Owner owner1;
     private Owner owner2;
 
-    private Pet pet1 = new Pet(1, "DouDou", "Labrador", date, date, 1);
-    private Pet pet2 = new Pet(2, "DouDou2", "Labrador", date, date, 1);
-    private Pet pet3 = new Pet(3, "DouDou3", "Labrador", date, date, 2);
-    private Pet pet4 = new Pet(4, "DouDou4", "Labrador", date, date, 2);
+    private Pet pet1 = new Pet(1, "DouDou", "Labrador", date, date, owner1);
+    private Pet pet2 = new Pet(2, "DouDou2", "Labrador", date, date, owner1);
+    private Pet pet3 = new Pet(3, "DouDou3", "Labrador", date, date, owner2);
+    private Pet pet4 = new Pet(4, "DouDou4", "Labrador", date, date, owner2);
 
     @Before
-    public void initialize() throws ValidationException {
+    public void initialize() {
 
         List<Pet> petList1 = new ArrayList<>();
         petList1.add(pet1);
@@ -104,7 +85,7 @@ public class PetControllerTest {
 
         List<Pet> petList = new ArrayList<>(Arrays.asList(pet1, pet2, pet3, pet4));
 
-        when(petService.findAll()).thenReturn(petList);
+        when(petService.getAllPets()).thenReturn(petList);
 
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/pet")
@@ -119,9 +100,9 @@ public class PetControllerTest {
 
     @Test
     public void retrievePetById() throws Exception {
-        Mockito.when(petService.findById(1)).thenReturn(Optional.of(pet1));
+        Mockito.when(petService.findById(1)).thenReturn(pet1);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pet/1")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pet/findById/1")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -136,36 +117,36 @@ public class PetControllerTest {
     @Test
     public void createPetTest() throws Exception {
 
-        Pet newPet = new Pet(5, "Cola", "Pomeranian", date, date, 2);
+        Pet newPet = new Pet(5, "Cola", "Pomeranian", date, date, owner2);
 
-        List<Owner> ownerList = (List<Owner>) ownerService.findAll();
-        ownerList.stream().forEach(System.out::println);
-
-
-        Mockito.when(petService.save(newPet)).thenReturn(newPet);
+        Mockito.when(petService.create(newPet)).thenReturn(newPet);
 
         // Convert the object into json
-        String content = objectMapper.writeValueAsString(newPet);
+        //String content = objectMapper.writeValueAsString(newPet);
+        String content = "{\"id\":5,\"name\":\"Cola\",\"breed\":\"Pomeranian\",\"date_created\":\"2022-07-16\",\"date_modified\":\"2022-07-16\",\"owner\":{\"id\":2}}";
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/pet")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/pet/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(content);
 
-        mockMvc.perform(requestBuilder)
+        ResultActions resultActions = mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.notNullValue()))
-                .andExpect(jsonPath("$.name", Matchers.is("Cola")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$.name", Matchers.is("Cola")))
+                .andDo(print());
+
+        System.out.println(resultActions);
     }
 
     @Test
     public void findByPetIdTest() throws Exception {
 
-        Pet newPet = new Pet(6, "Snowy", "Pomeranian", date, date, 2);
+        Pet newPet = new Pet(6, "Snowy", "Pomeranian", date, date, owner2);
 
-        Mockito.when(petService.findById(newPet.getId())).thenReturn(Optional.of(newPet));
+        Mockito.when(petService.findById(newPet.getId())).thenReturn(newPet);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pet/6")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pet/findById/6")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder)
@@ -176,15 +157,15 @@ public class PetControllerTest {
 
     @Test
     public void updatePetTest() throws Exception {
-        Pet updatePet = new Pet(7, "Loki", "Pomeranian", date, date, 2);
+        Pet updatePet = new Pet(7, "Loki", "Pomeranian", date, date, owner2);
 
-        when(petService.findById(updatePet.getId())).thenReturn(Optional.of(updatePet));
+        when(petService.findById(updatePet.getId())).thenReturn(updatePet);
 
-        Mockito.when(petService.save(updatePet)).thenReturn(updatePet);
+        Mockito.when(petService.update(updatePet)).thenReturn(updatePet);
 
         String updateContent = objectMapper.writeValueAsString(updatePet);
 
-        MockHttpServletRequestBuilder requestBuilders = MockMvcRequestBuilders.put("/pet")
+        MockHttpServletRequestBuilder requestBuilders = MockMvcRequestBuilders.put("/pet/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(updateContent);
@@ -198,12 +179,12 @@ public class PetControllerTest {
     @Test
     public void deleteByIdTest() throws Exception {
 
-        Pet deletePet = new Pet(8, "Loki", "Pomeranian", date, date, 2);
+        Pet deletePet = new Pet(8, "Loki", "Pomeranian", date, date, owner2);
 
-        when(petService.findById(deletePet.getId())).thenReturn(Optional.of(deletePet));
+        when(petService.findById(deletePet.getId())).thenReturn(deletePet);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.delete("/pet/8")
+                MockMvcRequestBuilders.delete("/pet/delete/8")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
 
@@ -231,7 +212,7 @@ public class PetControllerTest {
         Mockito.when(petController.findTopName()).thenReturn(jsonArray);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/pet/top")
+                MockMvcRequestBuilders.get("/pet/topName")
                         .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder)

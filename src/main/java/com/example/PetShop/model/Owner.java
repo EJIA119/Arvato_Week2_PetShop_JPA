@@ -1,5 +1,8 @@
 package com.example.PetShop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jdk.jfr.DataAmount;
 import org.springframework.lang.NonNull;
 
@@ -28,7 +31,8 @@ public class Owner {
     private String date_modified;
 
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Pet> petList;
 
     public Owner() {
