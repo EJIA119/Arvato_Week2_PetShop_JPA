@@ -15,9 +15,9 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
     List<Owner> findByDateCreated(String dateCreated);
 
-    @Query(value = "SELECT DISTINCT owners.* FROM owners INNER JOIN pet ON owners.id = pet.owner_id WHERE name LIKE CONCAT('%',:name ,'%')", nativeQuery = true)
-    List<Owner> findOwnerByName(@Param("name") String name);
-
-    @Query(value = "SELECT DISTINCT owners.* FROM owners INNER JOIN pet ON owners.id = pet.owner_id WHERE pet.id = :id",nativeQuery = true)
-    Owner findByPetId(@Param("id") int id);
+//    @Query(value = "SELECT DISTINCT owners.* FROM owners INNER JOIN pet ON owners.id = pet.owner_id WHERE name LIKE CONCAT('%',:name ,'%')", nativeQuery = true)
+//    List<Owner> findOwnerByName(@Param("name") String name);
+//
+//    @Query(value = "SELECT DISTINCT owners.* FROM owners INNER JOIN pet ON owners.id = pet.owner_id WHERE pet.id = :id",nativeQuery = true)
+//    Owner findByPetId(@Param("id") int id);
 }

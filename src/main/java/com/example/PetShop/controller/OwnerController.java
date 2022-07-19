@@ -27,7 +27,7 @@ public class OwnerController {
     @Autowired
     PetService petService;
 
-    @GetMapping("/owner")
+    @GetMapping("/owner/findAll")
     public Iterable<Owner> findAll(){
         return ownerService.getAllOwners();
     }
@@ -68,17 +68,17 @@ public class OwnerController {
         return ownerService.findByDateCreated(dateCreated);
     }
 
-    @GetMapping("/owner/findByPetName")
-    public List<Owner> findOwnerByPetName(@RequestParam("name") String name) throws ValidationException {
-
-        return ownerService.findOwnerByPetName(name);
-    }
-
-    @GetMapping("/owner/findByPetId/{id}")
-    public Owner findByPetId(@PathVariable int id) throws ValidationException {
-
-        return ownerService.findByPetId(id);
-    }
+//    @GetMapping("/owner/findByPetName")
+//    public List<Owner> findOwnerByPetName(@RequestParam("name") String name) throws ValidationException {
+//
+//        return ownerService.findOwnerByPetName(name);
+//    }
+//
+//    @GetMapping("/owner/findByPetId/{id}")
+//    public Owner findByPetId(@PathVariable int id) throws ValidationException {
+//
+//        return ownerService.findByPetId(id);
+//    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler

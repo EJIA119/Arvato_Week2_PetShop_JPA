@@ -27,31 +27,23 @@ public class Pet {
     @NonNull
     private String date_modified;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name="owner_id", referencedColumnName = "id")
-    private Owner owner;
-
     public Pet() {
     }
 
-    public Pet(int id, String name, String breed, String date_created, String date_modified, Owner owner) {
+    public Pet(int id, String name, String breed) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+    }
+
+    public Pet(int id, String name, String breed, String date_created, String date_modified) {
         this.id = id;
         this.name = name;
         this.breed = breed;
         this.date_created = date_created;
         this.date_modified = date_modified;
-        this.owner = owner;
     }
 
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
 
     public int getId() {
         return id;
@@ -101,7 +93,6 @@ public class Pet {
                 ", breed='" + breed + '\'' +
                 ", date_created=" + date_created +
                 ", date_modified=" + date_modified +
-                ", Owner=" + owner +
                 '}';
     }
 }

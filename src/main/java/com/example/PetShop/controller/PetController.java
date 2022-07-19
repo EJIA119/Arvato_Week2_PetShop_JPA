@@ -34,7 +34,7 @@ public class PetController {
         return petService.create(pet);
     }
 
-    @GetMapping("/pet")
+    @GetMapping("/pet/findAll")
     Iterable<Pet> read() {
         return petService.getAllPets();
     }
@@ -54,14 +54,12 @@ public class PetController {
         return petService.findById(id);
     }
 
-
-
-
     @GetMapping("/pet/topName")
     public List<Object> findTopName() throws ValidationException {
 
         return petService.countPetByName();
     }
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler

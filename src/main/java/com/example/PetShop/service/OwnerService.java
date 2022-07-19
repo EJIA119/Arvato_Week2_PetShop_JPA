@@ -21,10 +21,6 @@ public class OwnerService {
     @Autowired
     OwnerRepository ownerRepository;
 
-    @Lazy
-    @Autowired
-    PetService petService;
-
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Owner create(Owner newOwner) throws ValidationException {
@@ -45,7 +41,6 @@ public class OwnerService {
         // Set the pet list attribute value
         if (newOwner.getPetList() != null) {
             for (Pet p : newOwner.getPetList()) {
-                p.setOwner(newOwner);
                 p.setDate_created(dtf.format(LocalDate.now()));
                 p.setDate_modified(dtf.format(LocalDate.now()));
             }
@@ -94,20 +89,20 @@ public class OwnerService {
         return ownerList;
     }
 
-    public List<Owner> findOwnerByPetName(String name) throws ValidationException {
-
-        List<Owner> ownerList = ownerRepository.findOwnerByName(name);
-
-        return ownerList;
-    }
-
-    public Owner findByPetId(int id) throws ValidationException {
-
-        Owner owner = ownerRepository.findByPetId(id);
-
-        if (owner == null)
-            throw new ValidationException("Owner with Pet ID (" + id + ") not found. ");
-
-        return owner;
-    }
+//    public List<Owner> findOwnerByPetName(String name) throws ValidationException {
+//
+//        List<Owner> ownerList = ownerRepository.findOwnerByName(name);
+//
+//        return ownerList;
+//    }
+//
+//    public Owner findByPetId(int id) throws ValidationException {
+//
+//        Owner owner = ownerRepository.findByPetId(id);
+//
+//        if (owner == null)
+//            throw new ValidationException("Owner with Pet ID (" + id + ") not found. ");
+//
+//        return owner;
+//    }
 }

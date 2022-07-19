@@ -27,14 +27,12 @@ public class PetService {
 
     public Pet create(Pet pet) throws ValidationException {
 
-        Owner owner = ownerService.findById(pet.getOwner().getId());
+    	if(pet == null)
+    		throw new ValidationException("Pet information cannot be null.");
 
-        if (owner == null)
-            throw new ValidationException("Owner record cannot be found.");
-        else if (pet.getName() == null || pet.getBreed() == null)
+        if (pet.getName() == null || pet.getBreed() == null)
             throw new ValidationException("Pet record cannot be empty.");
 
-        pet.setOwner(owner);
         pet.setDate_created(dtf.format(LocalDate.now()));
         pet.setDate_modified(dtf.format(LocalDate.now()));
 
@@ -53,10 +51,6 @@ public class PetService {
         updatePet.setName(pet.getName());
         updatePet.setBreed(pet.getBreed());
         updatePet.setDate_modified(dtf.format(LocalDate.now()));
-
-        Owner owner = ownerService.findById(pet.getOwner().getId());
-
-        updatePet.setOwner(owner);
 
         return petRepository.save(updatePet);
     }

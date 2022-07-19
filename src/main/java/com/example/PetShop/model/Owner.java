@@ -31,8 +31,12 @@ public class Owner {
     private String date_modified;
 
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(
+            name="ownership",
+            joinColumns = { @JoinColumn(name="owner_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name="pet_id",referencedColumnName = "id")}
+    )
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Pet> petList;
 
     public Owner() {
