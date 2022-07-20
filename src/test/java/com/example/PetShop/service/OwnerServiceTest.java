@@ -28,7 +28,7 @@ public class OwnerServiceTest {
     @Test
     public void testCreateOwner() throws ValidationException {
 
-        Owner newOwner = new Owner(1,"Jon","J");
+        Owner newOwner = new Owner("Jackson","Wang");
 
         ownerService.create(newOwner);
 
@@ -37,29 +37,34 @@ public class OwnerServiceTest {
 
 
     @Test
-    public void testCreateTest() throws ValidationException {
-        Pet newPet = new Pet(1,"Kucly","Dog");
+    public void testAddOwnership() throws Exception {
 
-        petService.create(newPet);
+        Pet pet = petService.findById(2);
+
+        ownerService.updateRelation(pet.getId(), 1);
+
+        assertTrue(true);
+    }
+    
+    @Test
+    public void testRemoveOwnership() throws Exception {
+    	Pet pet = petService.findById(2);
+
+        ownerService.removeRelation(pet.getId());
 
         assertTrue(true);
     }
 
     @Test
-    public void testAddOwnership() throws ValidationException {
+    public void testUpdateOwner() throws ValidationException {
 
+        Owner updateOwner = ownerService.findById(1);
 
-        Pet pet = petService.findById(1);
-        Owner owner = ownerService.findById(1);
-        List<Pet> petList = owner.getPetList();
-        if(petList == null){
-            petList = new ArrayList<>();
-        }
-
-        petList.add(pet);
-        ownerService.update(owner);
-
+        updateOwner.setFirstName("Kimberly");
+        updateOwner.setLastName("Kim");
+        ownerService.update(updateOwner);
 
         assertTrue(true);
     }
+
 }

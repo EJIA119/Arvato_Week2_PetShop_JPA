@@ -30,6 +30,11 @@ public class Pet {
     public Pet() {
     }
 
+    public Pet(String name, String breed) {
+        this.name = name;
+        this.breed = breed;
+    }
+    
     public Pet(int id, String name, String breed) {
         this.id = id;
         this.name = name;
@@ -93,6 +98,6 @@ public class Pet {
                 ", breed='" + breed + '\'' +
                 ", date_created=" + date_created +
                 ", date_modified=" + date_modified +
-                '}';
+                '}';    
     }
 }

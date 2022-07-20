@@ -1,13 +1,20 @@
 package com.example.PetShop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jdk.jfr.DataAmount;
-import org.springframework.lang.NonNull;
-
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "owners")
@@ -50,6 +57,11 @@ public class Owner {
         this.petList = petList;
     }
 
+    public Owner(@NonNull String firstName, @NonNull String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
     public Owner(int id, @NonNull String firstName, @NonNull String lastName) {
         this.id = id;
         this.firstName = firstName;
@@ -111,6 +123,7 @@ public class Owner {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", petList='" + petList + '\'' +
                 '}';
     }
 }

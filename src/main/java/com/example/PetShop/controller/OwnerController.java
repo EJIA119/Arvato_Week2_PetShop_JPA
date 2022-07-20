@@ -5,6 +5,8 @@ import com.example.PetShop.model.Owner;
 import com.example.PetShop.model.Pet;
 import com.example.PetShop.service.OwnerService;
 import com.example.PetShop.service.PetService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -33,9 +36,11 @@ public class OwnerController {
     }
 
     @PostMapping("/owner/add")
-    public Owner create(@RequestBody Owner owner) throws ValidationException {
-        ownerService.create(owner);
+    public Owner create(@RequestBody(required=false) Owner owner) throws ValidationException {
+   
+    	ownerService.create(owner);
         return owner;
+    	
     }
 
     @GetMapping("/owner/findById/{id}")
@@ -49,7 +54,7 @@ public class OwnerController {
     }
 
     @PutMapping("/owner/update")
-    public Owner update(@RequestBody Owner owner) throws ValidationException {
+    public Owner update(@RequestBody(required=false) Owner owner) throws ValidationException {
         return ownerService.update(owner);
     }
 
@@ -68,17 +73,26 @@ public class OwnerController {
         return ownerService.findByDateCreated(dateCreated);
     }
 
-//    @GetMapping("/owner/findByPetName")
-//    public List<Owner> findOwnerByPetName(@RequestParam("name") String name) throws ValidationException {
-//
-//        return ownerService.findOwnerByPetName(name);
-//    }
-//
-//    @GetMapping("/owner/findByPetId/{id}")
-//    public Owner findByPetId(@PathVariable int id) throws ValidationException {
-//
-//        return ownerService.findByPetId(id);
-//    }
+    @GetMapping("/owner/findByPetName")
+    public List<Owner> findOwnerByPetName(@RequestParam("name") String name) throws ValidationException {
+
+        return ownerService.findOwnerByPetName(name);
+    }
+
+    @GetMapping("/owner/findByPetId/{id}")
+    public Owner findByPetId(@PathVariable int id) throws ValidationException {
+
+        return ownerService.findByPetId(id);
+    }
+
+    @PutMapping("/owner/updateRelation/{id}")
+    public void updateRelation(@PathVariable int id, @RequestBody(required=false) Pet pet) throws Exception {
+    	
+    	if(pet == null)
+    		throw new ValidationException("Pet is null");
+    	
+        ownerService.updateRelation(pet.getId(), id);
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler

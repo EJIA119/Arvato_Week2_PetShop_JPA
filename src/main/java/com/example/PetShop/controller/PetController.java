@@ -29,7 +29,7 @@ public class PetController {
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @PostMapping("/pet/add")
-    public Pet create(@RequestBody Pet pet) throws ValidationException {
+    public Pet create(@RequestBody(required=false) Pet pet) throws ValidationException {
 
         return petService.create(pet);
     }
@@ -40,12 +40,12 @@ public class PetController {
     }
 
     @PutMapping("/pet/update")
-    public Pet update(@RequestBody Pet pet) throws ValidationException {
+    public Pet update(@RequestBody(required=false) Pet pet) throws ValidationException {
         return petService.update(pet);
     }
 
     @DeleteMapping("/pet/delete/{id}")
-    public void deleteById(@PathVariable int id) throws ValidationException {
+    public void deleteById(@PathVariable int id) throws Exception {
         petService.deleteById(id);
     }
 

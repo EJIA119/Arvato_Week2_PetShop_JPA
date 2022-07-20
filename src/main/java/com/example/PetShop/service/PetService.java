@@ -46,6 +46,9 @@ public class PetService {
 
     public Pet update(Pet pet) throws ValidationException {
 
+    	if(pet == null)
+    		throw new ValidationException("Pet information is null.");
+    	
         Pet updatePet = petRepository.findById(pet.getId()).orElseThrow(() -> new ValidationException("Pet record not found with ID(" + pet.getId() + ")."));
 
         updatePet.setName(pet.getName());
@@ -55,9 +58,11 @@ public class PetService {
         return petRepository.save(updatePet);
     }
 
-    public Pet deleteById(int id) throws ValidationException {
+    public Pet deleteById(int id) throws Exception {
         Pet deletePet = petRepository.findById(id).orElseThrow(() -> new ValidationException("Pet record not found with ID(" + id + ")."));
 
+        ownerService.removeRelation(id);
+        
         petRepository.deleteById(id);
 
         return deletePet;
