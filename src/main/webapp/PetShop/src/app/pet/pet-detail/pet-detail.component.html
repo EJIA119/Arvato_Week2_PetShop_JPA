@@ -1,0 +1,82 @@
+<div class="card">
+    <div class="card-header">
+      <button class="btn btn-outline-primary" (click)="navigateBack()">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Back
+      </button>
+      {{ pageTitle }}
+
+      <button *ngIf="pet" class="btn btn-outline-danger float-end" (click)="pet_deleteById(pet.id)">
+        Remove
+      </button>
+
+      <button *ngIf="pet" class="btn btn-outline-primary float-end" [routerLink]="['/pet/update/',pet.id]">
+        Update
+      </button>
+
+      
+    </div>
+    <div class="card-body">
+      <h5 class="card-title mb-5"><b>Pet Information</b></h5>
+      <div *ngIf="pet">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="name"><b>Name</b></label>
+            <p class="form-control borderless">{{ pet.name }}</p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="breed"><b>Breed</b></label>
+            <p class="form-control borderless">
+              {{ pet.breed }}
+            </p>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="dateCreated"><b>Date Created</b></label>
+            <p class="form-control borderless">{{ pet.date_created }}</p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="date_modified"><b>Date Modified</b></label>
+            <p class="form-control borderless">
+              {{ pet.date_modified }}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <hr />
+
+      <div *ngIf="owner">
+        <h5 class="card-title"><b>Owner Information</b></h5>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="firstName"><b>First Name</b></label>
+            <p class="form-control borderless">{{ owner.firstName }}</p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="lastName"><b>Last Name</b></label>
+            <p class="form-control borderless" id="lastName">
+              {{ owner.lastName }}
+            </p>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="dateCreated"><b>Date Created</b></label>
+            <p class="form-control borderless">{{ owner.dateCreated }}</p>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="date_modified"><b>Date Modified</b></label>
+            <p class="form-control borderless" id="date_modified">
+              {{ owner.date_modified }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  

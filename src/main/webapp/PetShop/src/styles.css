@@ -1,0 +1,35 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~font-awesome/css/font-awesome.min.css";
+
+
+/* You can add global styles to this file, and also import other style files */
+*{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+div.card-header {
+  font-size: large;
+}
+
+div.card {
+  margin-top: 10px;
+}
+
+.table {
+  margin-top: 10px;
+}
+
+a {
+  text-decoration: none!important;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.borderless {
+  border: 0;
+}
+
+.text-family-custom {
+  font-family: 'Courier New', Courier, monospace;
+}

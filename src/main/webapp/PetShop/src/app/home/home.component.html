@@ -1,0 +1,247 @@
+<div class="card mb-5">
+  <div class="card-header">{{ pageTitle }}</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">Owner API</div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <a class="btn btn-success" routerLink="/owner/findAll">GET</a>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findAll"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-success" (click)="owner_findById()">
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findById/{id}"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button
+                    class="btn btn-success"
+                    (click)="owner_findPetByOwnerId()"
+                  >
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findPetByOwnerId/{id}"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button
+                    class="btn btn-success"
+                    (click)="owner_findByDateCreated(dateCreated)"
+                    [disabled]="!dateCreated.valid"
+                  >
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findByDateCreated?dateCreated="
+              />
+              <input
+                type="text"
+                placeholder="dateCreated"
+                ngModel
+                #dateCreated="ngModel"
+                class="form-control"
+                required
+                bsDatepicker
+                [bsConfig]="{dateInputFormat:'YYYY-MM-DD'}"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-success" (click)="owner_findByPetId()">
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findByPetId/{id}"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button
+                    class="btn btn-success"
+                    (click)="owner_findByPetName()"
+                  >
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/findByPetName?name="
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-primary" (click)="owner_create()">
+                    POST
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/owner/add"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-title">Pet API</div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <a class="btn btn-success" routerLink="/pet/findAll">GET</a>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pet/findAll"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-success" (click)="pet_findById()">
+                    GET
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pet/findById/{id}"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <a class="btn btn-success" routerLink="/pet/topName">GET</a>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pet/topName"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-primary" (click)="pet_create()">
+                    POST
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pet/add"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button
+                    class="btn btn-warning text-white"
+                    (click)="pet_findById()"
+                  >
+                    PUT
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pet/update"
+              />
+            </div>
+
+            <div class="input-group mb-2 mr-sm-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <button class="btn btn-danger" (click)="pet_findById()">
+                    DELETE
+                  </button>
+                </div>
+              </div>
+              <input
+                type="text"
+                class="form-control urlStyle"
+                disabled
+                placeholder="/pete/delete/{id}"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

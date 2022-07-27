@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <button class="btn btn-outline-primary" (click)="navigateBack()">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Back
+      </button>
+      {{ pageTitle }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title mb-2"><b>Owner Information</b></h5>
+      <form [formGroup]="createOwnerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label for="firstName"><b>First Name</b></label>
+            <input
+              type="text"
+              autofocus
+              class="form-control"
+              formControlName="firstName"
+            />
+            <div
+              *ngIf="
+                createOwnerForm.get('firstName')?.touched &&
+                createOwnerForm.get('firstName')?.invalid &&
+                createOwnerForm.get('firstName')?.hasError('required')
+              "
+              class="alert alert-danger form-control pt-1 pb-1 mt-1">
+              <i class="fa fa-exclamation-circle text-danger">
+                <span class="ml-1 text-family-custom">&nbsp; Please enter the first name for owner.</span>
+              </i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="form-group col-md-12">
+            <label for="lastName"><b>Last Name</b></label>
+            <input
+              class="form-control"
+              id="lastName"
+              formControlName="lastName"
+            />
+            <div
+              *ngIf="
+                createOwnerForm.get('lastName')?.touched &&
+                createOwnerForm.get('lastName')?.invalid &&
+                createOwnerForm.get('lastName')?.hasError('required')
+              "
+              class="alert alert-danger form-control pt-1 pb-1 mt-1">
+              <i class="fa fa-exclamation-circle text-danger">
+                <span class="ml-1 text-family-custom">&nbsp; Please enter the last name for owner.</span>
+              </i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="form-group-col-md-12">
+            <button
+              class="btn btn-success w-100"
+              type="submit"
+              [disabled]="createOwnerForm.invalid"
+            >
+              Create <i class="fa fa-plus-square-o"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

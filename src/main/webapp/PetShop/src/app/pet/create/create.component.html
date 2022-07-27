@@ -1,0 +1,84 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <button class="btn btn-outline-primary" (click)="navigateBack()">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          Back
+        </button>
+        {{ pageTitle }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title mb-2"><b>Pet Information</b></h5>
+        <form [formGroup]="createPetForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="name"><b>Pet Name</b></label>
+              <input
+                type="text"
+                autofocus
+                class="form-control"
+                formControlName="name"
+              />
+              <div
+                *ngIf="
+                  createPetForm.get('name')?.touched &&
+                  createPetForm.get('name')?.invalid &&
+                  createPetForm.get('name')?.hasError('required')
+                "
+                class="alert alert-danger form-control pt-1 pb-1 mt-1">
+                <i class="fa fa-exclamation-circle text-danger">
+                  <span class="ml-1 text-family-custom">&nbsp; Please enter the name for pet.</span>
+                </i>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mt-2">
+            <div class="form-group col-md-12">
+              <label for="breed"><b>Breed</b></label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="breed"
+              />
+              <div
+                *ngIf="
+                  createPetForm.get('breed')?.touched &&
+                  createPetForm.get('breed')?.invalid &&
+                  createPetForm.get('breed')?.hasError('required')
+                "
+                class="alert alert-danger form-control pt-1 pb-1 mt-1">
+                <i class="fa fa-exclamation-circle text-danger">
+                  <span class="ml-1 text-family-custom">&nbsp; Please enter the breed for pet.</span>
+                </i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-2" *ngIf="ownerList.length">
+            <div class="form-group col-md-12">
+                <label for="owner"><b>Owner (Optional)</b></label>
+                <select class="form-control" formControlName="owner">
+                    <option *ngFor="let owner of ownerList" [value]="owner.id">
+                        {{ owner.firstName + " " + owner.lastName }}
+                    </option>
+                </select>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="form-group-col-md-12">
+              <button
+                class="btn btn-success w-100"
+                type="submit"
+                [disabled]="createPetForm.invalid"
+              >
+                Create <i class="fa fa-plus-square-o"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

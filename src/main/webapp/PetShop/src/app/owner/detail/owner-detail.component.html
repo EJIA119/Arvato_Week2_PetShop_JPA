@@ -1,0 +1,100 @@
+<ng-template #addPetContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-add-pet">Update Ownership</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <form [formGroup]="ownershipForm" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+    
+      <div class="mb-3">
+        <label for="pet">Existing Available Pet List</label>
+        <div class="form-group">
+          <select class="form-control" formControlName="availablePet">
+            <option value="">- Select one pet -</option>
+            <option *ngFor="let pet of availablePetList" [value]="pet.id">{{ pet.name }}</option>
+          </select>
+          
+        </div>
+      </div>
+    
+  </div>
+  <div class="modal-footer">
+    <button type="submit" [disabled]="ownershipForm.invalid" class="btn btn-outline-success" (click)="modal.dismiss()">Save</button>
+  </div>
+</form>
+</ng-template>
+
+
+<div class="card">
+  <div class="card-header">
+    <button class="btn btn-outline-primary" (click)="navigateBack()">
+      <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      Back
+    </button>
+    {{ pageTitle }}
+
+    <button *ngIf="availablePetList.length" type="button" class="btn btn-outline-primary float-end"  (click)="owner_addPet(addPetContent)">
+      Add Pet
+      <i class="fa fa-plus" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title mb-5"><b>Owner Information</b></h5>
+    <div *ngIf="owner">
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="firstName"><b>First Name</b></label>
+          <p class="form-control borderless">{{ owner.firstName }}</p>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="lastName"><b>Last Name</b></label>
+          <p class="form-control borderless" id="lastName">
+            {{ owner.lastName }}
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="dateCreated"><b>Date Created</b></label>
+          <p class="form-control borderless">{{ owner.dateCreated }}</p>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="date_modified"><b>Date Modified</b></label>
+          <p class="form-control borderless" id="date_modified">
+            {{ owner.date_modified }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="petList.length">
+      <hr />
+      <h5 class="card-title mt-2"><b>Pet List</b></h5>
+      <table class="table" *ngIf="petList.length">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Date Created</th>
+            <th>Date Modified</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pet of petList">
+            <td>{{ pet.id }}</td>
+            <td>{{ pet.name }}</td>
+            <td>{{ pet.breed }}</td>
+            <td>{{ pet.date_created }}</td>
+            <td>{{ pet.date_modified }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</div>
+
+
+

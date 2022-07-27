@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysqlDB:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    networks:
+      - spring-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=PetStore
+
+  springboot-petshop:
+    image: springboot-petshop:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL:=jdbc:mysql://mysqlDB:3306/PetStore?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    networks:
+      - spring-net
+    depends_on:
+      - mysqlDB
+
+  angular-petshop:
+    image: angular-petshop:latest
+    ports:
+      - "4200:80"
+    networks:
+      - spring-net
+
+networks:
+  spring-net:
