@@ -72,7 +72,12 @@ public class OwnerService {
 
     public List<Pet> findPetByOwnerId(int id) throws ValidationException {
         Optional<Owner> owner = ownerRepository.findById(id);
-        return owner.map(Owner::getPetList).orElseThrow(() -> new ValidationException("Pet with Owner ID (" + id + ") not found."));
+        List<Pet> petList = owner.get().getPetList();
+        
+		if(petList.isEmpty())
+			throw new ValidationException("Pet with Owner ID (" + id + ") not found.");
+        
+        return petList;
     }
 
 
@@ -156,6 +161,9 @@ public class OwnerService {
 
         List<Owner> ownerList = ownerRepository.findOwnerByName(name);
 
+    	if(ownerList.size() == 0)
+    		throw new ValidationException("Owner with Pet Name (" + name + ") not found. ");
+        
         return ownerList;
     }
 

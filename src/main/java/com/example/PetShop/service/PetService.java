@@ -1,7 +1,9 @@
 package com.example.PetShop.service;
 
+import com.example.PetShop.model.ITopName;
 import com.example.PetShop.model.Owner;
 import com.example.PetShop.model.Pet;
+import com.example.PetShop.model.TopName;
 import com.example.PetShop.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
@@ -72,7 +74,11 @@ public class PetService {
         return petRepository.findById(id).orElseThrow(() -> new ValidationException("Pet record not found with ID(" + id + ")."));
     }
 
-    public List<Object> countPetByName() {
+    public List<ITopName> countPetByName() {
         return petRepository.countPetByName();
+    }
+    
+    public List<Pet> findAllOrphanPet(){
+    	return petRepository.findAllOrphanPet();
     }
 }

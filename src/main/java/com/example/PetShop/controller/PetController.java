@@ -2,7 +2,9 @@ package com.example.PetShop.controller;
 
 
 import com.example.PetShop.model.ErrorMessage;
+import com.example.PetShop.model.ITopName;
 import com.example.PetShop.model.Pet;
+import com.example.PetShop.model.TopName;
 import com.example.PetShop.model.Owner;
 import com.example.PetShop.service.OwnerService;
 import com.example.PetShop.service.PetService;
@@ -55,9 +57,14 @@ public class PetController {
     }
 
     @GetMapping("/pet/topName")
-    public List<Object> findTopName() throws ValidationException {
+    public List<ITopName> findTopName() throws ValidationException {
 
         return petService.countPetByName();
+    }
+    
+    @GetMapping("/pet/orphanPet")
+    public List<Pet> findAllOrphanPet(){
+    	return petService.findAllOrphanPet();
     }
 
 
